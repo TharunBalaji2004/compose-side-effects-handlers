@@ -45,13 +45,13 @@ The list of side effect handlers are:
     
 * [DisposableEffect](#disposableeffect)
     
-* rememberUpdatedState
+* [rememberUpdatedState](#rememberupdatedstate)
     
-* rememberCorutineScope
+* [rememberCoroutineScope](#remembercoroutinescope)
     
-* produceState
+* [produceState](#producestate)
     
-* derviedStateOf
+* [derviedStateOf](#derivedstateof)
     
 
 ## SideEffect
@@ -282,7 +282,7 @@ fun ProducedState() {
 }
 ```
 
-### derviedStateOf
+## derviedStateOf
 
 The derivedStateOf function provided by Jetpack Compose allows you to compute a derived or derived read-only state based on one or more other states or values. It ensures that the derived state is recomposed only when one of its dependencies changes.
 
