@@ -27,6 +27,21 @@
         <activity
             android:name=".SideEffect"
             android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".RememberCoroutineScope"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".RememberUpdatedState"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".ProducedDerivedState"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
