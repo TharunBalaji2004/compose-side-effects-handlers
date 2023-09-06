@@ -179,3 +179,145 @@ fun ListOfNames() {
 ```
 
 By using DisposableEffect, we can ensure that resources are properly managed and cleaned up when they are no longer needed, which is crucial for the overall stability and performance of your Composable-based UI.
+
+## rememberCoroutineScope
+
+The rememberCoroutineScope is a utility function provided by Jetpack Compose to create a coroutine scope that is bound to the Composable function's lifecycle. This is particularly useful when you need to launch and manage coroutines within Jetpack Compose components, ensuring that they are canceled appropriately when the Composable is removed from the UI hierarchy.
+
+```kotlin
+@Composable
+fun HasSideEffect() {
+    val counter = remember { mutableStateOf(0) }
+    var coroutineScope = rememberCoroutineScope()
+    
+    var text = "Counter is running ${counter.value}"
+    if (counter.value == 10) text = "Counter stopped"
+    
+    Column {
+        Text(text = text)
+        Button(onClick = {
+            coroutineScope.launch {
+                Log.d("DEBUG", "Started....")
+            
+                try {
+                    for (i in 1..10){
+                        counter.value++
+                        delay(1000)
+                    } 
+                } catch(e: Exception) {
+                    Log.d("DEBUG",e.message.toString())
+                }
+            }
+        }) {
+            Text(text = "START")
+        }
+    }
+}
+```
+
+From the above code snippet, as we can see the `counter` value changes after each second. The only difference between LaunchedEffect and rememberCoroutineScope is, the LaunchedEffect is a Composable so it requires another parent Composable to declare whereas remeberCoroutineScope is a utility function which means it can be declared during any event or within any Composable.
+
+## rememberUpdatedState
+
+The rememberUpdatedState is a side effect handler provided by Jetpack Compose that is used to ensure that a Composable always reflects the most up-to-date state when it's recomposed. It's particularly useful when you need to work with a snapshot of some state that might change during the composition process.
+
+Consider the code snippet:
+
+```kotlin
+@Composable
+fun App() {
+    var counter = remember { mutableStateOf(0) }
+
+    LaunchedEffect(key1 = Unit, block = {
+        delay(1000)
+        counter.value = 10
+    })
+
+    Counter(counter.value)
+}
+
+@Composable
+fun Counter(value: Int) {
+    val state = rememberUpdatedState(newValue = value)
+   
+    LaunchedEffect(key1 = Unit, block = {
+        delay(3000)
+        Log.d("counter",state.value.toString())
+    })
+
+    Text(text = value.toString())
+}
+```
+
+Here, the `App` Composable passes the updated value of `counter` to `Counter` Composable, to maintain the recent or updated value, `rememberUpdatedState` holds the new value and Log statement prints the value held by `state`
+
+This is particularly useful when you want to capture the initial state for some calculation or display purposes and ensure that it doesn't change during the composition process, preventing unexpected behavior or bugs.
+
+## produceState
+
+The produceState is a function provided by Jetpack Compose that allows you to create a custom `State` object in a Composable that can be read and updated within a Composable's recomposition cycle. It's similar to `mutableStateOf`, but it also provides a way to produce new state values based on the current state and an update function.
+
+This can be useful when you want to derive new state from existing state or perform some side effects when the state changes. The produceState accepts three parameters:
+
+* `initialValue`: The initial value of the state.
+    
+* `producer`: A function that allows you to update the state.
+    
+
+```kotlin
+@Composable
+fun ProducedState() {
+    // prodcues custom state using custom producer function
+    val state = produceState(initialValue = 0, producer = {
+        for (i in 1..10){
+            delay(1000)
+            value++
+        }
+    })
+
+    Text(
+        text = state.value.toString(), 
+        style = MaterialTheme.typography.headlineLarge
+    )
+}
+```
+
+### derviedStateOf
+
+The derivedStateOf function provided by Jetpack Compose allows you to compute a derived or derived read-only state based on one or more other states or values. It ensures that the derived state is recomposed only when one of its dependencies changes.
+
+Inside the lambda passed to `derivedStateOf`, you can calculate the derived state using the values of other states or variables. Jetpack Compose automatically tracks the dependencies of the derived state and recomposes the Composable only when one of those dependencies changes.
+
+```kotlin
+@Composable
+fun DerivedState() {
+    var count = remember { mutableStateOf(0) }
+    var doubleCount = remember { mutableStateOf(0) }
+
+    // Calculate a derived state: double the count
+    val derivedDoubleCount = derivedStateOf {
+        doubleCount = count * 2
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Text(text = "Count: $count", fontSize = 24.sp)
+        Text(text = "Double Count: $derivedDoubleCount", fontSize = 24.sp)
+
+        Button(
+            onClick = {
+                // Update the count
+                count++
+            },
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(text = "Increment Count")
+        }
+    }
+}
+```
+
+That's all about Side Effect Handlers, try developing apps with these handlers implementing network and async calls. See you in the next article! 😊✅
