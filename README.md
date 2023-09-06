@@ -39,11 +39,11 @@ In Jetpack Compose, side effect handlers are a way to manage and handle side eff
 
 The list of side effect handlers are:
 
-* SideEffect
+* [SideEffect](#sideeffect)
     
-* LaunchedEffect
+* [LaunchedEffect](#launchedeffect)
     
-* DisposableEffect
+* [DisposableEffect](#disposableeffect)
     
 * rememberUpdatedState
     
