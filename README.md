@@ -142,3 +142,40 @@ fun ListOfNames() {
     }
 }
 ```
+
+## DisposableEffect
+DisposableEffect is a side-effect API in Jetpack Compose, used for managing resources that need to be acquired and released when a Composable is created and destroyed. It's especially useful for managing resources that have a lifecycle associated with a Composable and need to be cleaned up when the Composable is no longer active.
+
+1. **First Composition**: The code inside the `DisposableEffect` block is executed when the Composable is first composed. This is typically when the Composable is initially displayed or when its parent Composable is initially composed.
+    
+2. **Removal from Composition**: The code inside the `onDispose` block is executed when the Composable is removed from the composition. This occurs when the Composable is no longer needed or when its key changes.
+
+Consider the following code snippet:
+
+```kotlin
+@Composable
+fun ListOfNames() {
+    val nameList = remember { mutableStateOf(listOf<String>()) }
+    
+    // Gets executed when initial Composition occurs
+    DisposableEffect(key1 = Unit, effect = {
+        nameList.value = fetchData()
+        onDispose {    // Gets executed when composition gets destroyed
+            nameList.value = emptyList()
+        }
+    })
+
+
+    LazyColumn {
+        items(nameList.value) { item ->
+            Card(modifier = Modifier
+                .fillMaxWidth(1f)
+                .padding(bottom = 5.dp)) {
+                Text(text = item, modifier = Modifier.padding(10.dp))
+            }
+        }
+    }
+}
+```
+
+By using DisposableEffect, we can ensure that resources are properly managed and cleaned up when they are no longer needed, which is crucial for the overall stability and performance of your Composable-based UI.
