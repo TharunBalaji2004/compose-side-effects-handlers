@@ -2,13 +2,13 @@
 
 # Side Effects Handlers in Compose
 
-Hey there Android devs 👋, This article helps in managing side effects in Jetpack Compose which is essential for building robust and efficient Android applications explained with a list of available side effects handlers and examples.
+Hey there Android devs 👋, This article helps in managing side effects in Jetpack Compose which is essential for building robust and efficient Android applications explained with a list of available side effects handlers and examples. 
 
 Hey just a minute 🙋‍♂️ star this GitHub repo for future reference: [TharunBalaji2004/compose-side-effects-handlers](https://github.com/TharunBalaji2004/compose-side-effects-handlers)
 
 ## What is meant by side effects?
 
-From the official documentation of Android, A **side-effect** is a change to the state of the app that happens outside the scope of a composable function. In simpler terms, any function, statement, or action that should not be done by any other composable is known as a side effect.
+From the official documentation of Android, A **side-effect** is a change to the state of the app that happens outside the scope of a composable function. In simpler terms, any function, statement, or action that should not be done by any other composable is known as a side effect. Examples such as Network calls, Database Requests, Animations, etc.
 
 Lets understand it with a simpler example!
 
